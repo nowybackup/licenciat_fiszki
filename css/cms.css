@@ -55,7 +55,7 @@ input[type=password]:focus {
     flex-grow: 1;
     box-sizing: border-box;
     margin: 10px 70px;
-    padding: 30px 60px;
+    padding: 10px 60px;
     text-align: center;
     text-transform: uppercase;
     border: 3px white solid;
@@ -66,18 +66,18 @@ input[type=password]:focus {
 }
 
 .usun {
-    flex-basis: 10%;
-    flex-grow: 1;
-    box-sizing: border-box;
-    margin: 10px 70px;
-    padding: 42px 30px;
-    text-align: center;
-    text-transform: uppercase;
-    border: 3px white solid;
-    background-color: #4c7689;
-    cursor: pointer;
-    color: white;
-    font-size: 1.6rem;
+flex-basis: 10%;
+flex-grow: 1;
+box-sizing: border-box;
+margin: 10px 70px;
+padding: 10px 60px;
+text-align: center;
+text-transform: uppercase;
+border: 3px white solid;
+background-color: #4c7689;
+cursor: pointer;
+color: white;
+font-size: 1.6rem;
 }
 
 }
@@ -114,12 +114,70 @@ table {
     font-size: 1.6rem;
 }
 
-.text {
-  flex-basis: 20%;
+.wybrany_zestaw {
+  flex-basis: 50%;
   flex-grow: 1;
   background-color: #4c7689;
-  border: 10px solid green;
+  border: 5px solid white;
   position: center;
-  margin: 10px 70px;
+  margin: 10px 10px;
   margin-bottom:30px;
 }
+
+.wybrany_zestaw div{
+  flex-basis: 50%;
+  flex-grow: 1;
+  background-color: red;
+  border: 0px solid red;
+  position: center;
+  margin: 10px 0px;
+  margin-bottom:30px;
+}
+.wybrany_zestaw div.active{
+     background-color: #26414d;
+     border: 0px #a2bdbe solid;
+}
+
+.wybrany_zestaw_usuniety div{
+  flex-basis: 50%;
+  flex-grow: 1;
+  background-color: red;
+  border: 10px solid red;
+  position: center;
+  margin: 10px 0px;
+  margin-bottom:30px;
+}
+
+.wybrany_zestaw_usuniety div.active{
+     background-color: #26414d;
+     border: 3px #a2bdbe solid;
+}
+
+.usun_zestaw {
+  flex-basis: 5%;
+  flex-grow: 1;
+  background-color: red;
+  border: 10px solid red;
+  position: center;
+  margin: 10px;
+  margin-bottom:30px;
+}
+
+.dodaj_zestaw {
+  flex-basis: 5%;
+  flex-grow: 1;
+  background-color: green;
+  border: 10px solid green;
+  position: center;
+  margin: 10px 0px;
+  margin-bottom:30px;
+}
+
+.select_zestaw {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 10px 60px;
+}
+
+

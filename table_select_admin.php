@@ -1,7 +1,7 @@
 <?php 
 //Dzięki temu plikowi można wybrać której tabeli słówek w danej chwili się uczysz, chciałbym to zamienić by aktywną tabelę ustawiało się bezpośrednio w ustawieniach po przez dodanie flagi w bazie danych  AND DATA_FREE='0' OR  DATA_FREE='1'";   //
 
-        $query = "SELECT table_name  FROM information_schema.tables where table_schema='fiszki_nauka_slowek' ";  
+        $query = "SELECT table_name  FROM information_schema.tables where table_schema='fiszki_nauka_slowek'";  
         //wyszukuje nazwy tabel z db //
         //$polecenie = "INSERT INTO table_name (id, v1, v2, weight, zdanie) values ('$count','$value1','$value2','1', '$value3')";      
         $result=mysqli_query($connect,$query); 

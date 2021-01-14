@@ -1,5 +1,5 @@
 <?php
- // require __DIR__ .'/vendor/mustache/mustache/src/Mustache/Autoloader.php';
+ // bTBPnBp9PFo4g1y1tvnqZ4fB require __DIR__ .'/vendor/mustache/mustache/src/Mustache/Autoloader.php';
 // Mustache_Autoloader::register();
 //  $m = new Mustache_Engine; echo $m->render('Hello, {{planet}}!', array('planet' => 'World')); // "Hello, World!"
 include('baza.php');//sprawdzam połączenie
@@ -17,7 +17,7 @@ if(!$connect){
 <div class="select" >
 
 <button class="fiszki" id="przycisk">NAUKA</button>
-<button class="pokaz"  id="zestawy">ZARZĄDZAJ ZESTAWAMI</button>
+<button class="zestawy"  id="zestawy">ZARZĄDZAJ ZESTAWAMI</button>
 
 </div>
 </br>
