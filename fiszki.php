@@ -20,7 +20,6 @@ if(!$connect){
 <button class="zestawy"  id="zestawy">ZARZĄDZAJ ZESTAWAMI</button>
 
 </div>
-</br>
 <h2>AKTYWNE ZESTAWY</h2>
     <div class="select">
         <?php require_once "table_select.php" ?>

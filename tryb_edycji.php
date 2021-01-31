@@ -32,8 +32,24 @@ $tabela = filtruj($_GET['zestaw']);
          echo "<h1>Nie można zrealizować połączenia z żadną bazą danych</h1>";
     }
     
-wyswietl_nazwe_zestawu($tabela); 
+wyswietl_nazwe_zestawu($tabela, $pdo); 
 
+// menu 
+echo '
+<div class="menu">
+   <div class="menubutton"><i class="icon-cog-alt"></i>
+   </div>
+   <div class="menu-content"> 
+           <div>
+            <h1>Operacje na słówkach</h1>'
+;
+            przyciski_aktywuj_deaktywuj($tabela);
+            formularz_dodaj($tabela);
+echo '
+           </div>
+   </div>
+</div>'
+;
 // kolumny tabeli bazy danych
 
 $angielski = 'v1';
@@ -152,14 +168,14 @@ $slowo = filtruj($_POST['slowo']);
 
   	  try
       {
-      $zapytanie = "SELECT * FROM $tabela WHERE $polski OR $angielski LIKE '$slowo'";                 
+      $zapytanie = "SELECT * FROM $tabela WHERE $angielski LIKE '$slowo' OR $polski LIKE '$slowo'";
+      echo $zapytanie;              
       $liczba = $pdo ->query($zapytanie) or die('Błąd zapytania');
       $wykonanie = $pdo->prepare($zapytanie);
       $wykonanie->execute();
       $licznik_id=$wykonanie->rowCount();
          if ($licznik_id == 0)
-         {
-                
+         { 
                 header("Location: tryb_edycji.php?zestaw=$tabela");
          }
          else 
@@ -186,16 +202,12 @@ case 'aktywuj':
        -  1 -   Unit_1   -   1   -  
        -    -            -       -
        ---------------------------  */
-
-// $aktywuj = isset($_GET['aktywuj']));
-
-    if(isset($_GET['zestaw'])) { 
-          echo "This is aktywuj that is selected"; 
-    } 
-     echo 'aktywuj';
-    /* try
+       
+    try
     {
-    $pdo ->exec("DELETE FROM $tabela WHERE id = '$id' ") or die('Błąd zapytania');
+        $querty = "UPDATE info_table SET flaga = '1' WHERE name_table = '$tabela' ";
+        $pdo ->exec($querty) or die('Błąd zapytania UPDATE');
+        //echo $tabela. " zmodyfikowano na 1 czyli aktywny";
     header("Location: tryb_edycji.php?zestaw=$tabela");
       
     }
@@ -203,37 +215,29 @@ case 'aktywuj':
     {
        echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
        echo '</br><a href="tryb_edycji.php?zestaw='.$tabela.'">wróć</a>';
-    }*/
+    }
      
 break;
 
 case 'deaktywuj':
-// $deaktywuj = isset($_GET['deaktywuj']));
-   
-        if(isset($_GET['zestaw'])) { 
-                    echo "This is deaktywuj that is selected"; 
-                } 
-                echo 'deaktywuj';
-
+    try
+    {
+        $querty = "UPDATE info_table SET flaga = '0' WHERE name_table = '$tabela' ";
+        $pdo ->exec($querty) or die('Błąd zapytania UPDATE');
+        //echo $tabela. " zmodyfikowano na 0 czyli aktywny";
+    header("Location: tryb_edycji.php?zestaw=$tabela");
+      
+    }
+    catch(PDOException $e)
+    {
+       echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
+       echo '</br><a href="tryb_edycji.php?zestaw='.$tabela.'">wróć</a>';
+    }
+    
 break;
                               
 default:
-echo '
-<div class="menu">
-   <div class="menubutton"><i class="icon-cog-alt"></i>
-   </div>
-   <div class="menu-content"> 
-           <div>
-            <h1>Operacje na słówkach</h1>'
-;
-            formularz_aktywuj($tabela);
-            //formularz_deaktywuj($tabela);
-            formularz_dodaj($tabela);
-echo '
-           </div>
-   </div>
-</div>'
-;
+
 
     try
     {
@@ -315,46 +319,58 @@ $id = $row['id'];
                 ';                                                                                    
 }
 
-function wyswietl_nazwe_zestawu($tabela){
-    echo '
+function wyswietl_nazwe_zestawu($tabela, $pdo){                    
+    try
+    {
+        $querty = "SELECT name_table, flaga FROM info_table WHERE name_table = '$tabela'";
+        $flaga = $pdo ->query($querty) or die('Błąd zapytania SELECT');
+        $row = $flaga->fetch();
+        //echo $tabela. " zmodyfikowano na 0 czyli aktywny";
+        if ($row['flaga'] == 1){
+                echo '
                    <div class="nowe_slowo">
                    <div class="select_zestaw">
-                   <div class="wybrany_zestaw"><h2>'.$tabela.'</h2>
+                   <div class="wybrany_zestaw_zielony"><h2>'.$tabela.'</h2>
                      </div>
                     </div> 
                    </div>
                     
-                    '; 
+                    ';
+        } else if ($row['flaga'] == 0)   {
+                echo '
+                   <div class="nowe_slowo">
+                   <div class="select_zestaw">
+                   <div class="wybrany_zestaw_czerwony"><h2>'.$tabela.'</h2>
+                     </div>
+                    </div> 
+                   </div>
+                    
+                    ';
+        }      
+        
+       
+    }
+    catch(PDOException $e)
+    {
+       echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
+       echo '</br><a href="tryb_edycji.php?zestaw='.$tabela.'">wróć</a>';
+    }
+                    
 }
 
-function formularz_aktywuj($tabela){
+function przyciski_aktywuj_deaktywuj($tabela){
         echo '
                    <div class="nowe_slowo">
                    <h2>'.$tabela.'</h2>
                    
-                    <button id="aktywuj" class="przycisk przycisk1">Aktywuj</button>
-                    <button id="deaktywuj" class="przycisk przycisk3">Deaktywuj</button>
+                    <button id="aktywuj" name="aktywuj" class="przycisk przycisk1">Aktywuj</button>
+                    <button id="deaktywuj" name"deaktywuj" class="przycisk przycisk3">Deaktywuj</button>
                    </div>
                     
                     '; 
 
 } 
-/*
-function formularz_deaktywuj(){
-$tabela = $_GET['zestaw'];
-        echo '
-                   <div class="nowe_slowo">
-                   <h2>'.$tabela.'</h2>
-                   
-                    <form method="POST" action="tryb_edycji.php?zestaw='.$tabela.'&'.$tabela.'=deaktywuj" >
-                        <input name="deaktywuj" type="button" value="Deaktywuj zestaw" >
-                    </form>
 
-                   </div>
-                    
-                    '; 
-
-}*/
 ?>
 
 <script>
@@ -364,19 +380,19 @@ const menu_click = document.querySelector('.menubutton').addEventListener('click
 });
 
 /* skrypty odpowiedzialne za przemieszczanie się między stronami*/
-$(document).ready(function(){
+
   $('#przycisk').click(function(){
     window.document.location.href="fiszki.php";
     return false;
   });
-});
 
-$(document).ready(function(){
+
+
   $('#zestawy').click(function(){
     window.document.location.href="tryb_wyboru.php";
     return false;
   });
-});
+
 
 $(document).ready(function(){
   $('#aktywuj').click(function(){
