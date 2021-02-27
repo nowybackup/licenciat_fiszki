@@ -25,7 +25,7 @@ if(!$connect){
         <?php require_once "table_select.php" ?>
     </div>
     <div class="panel"><span></span><span></span>  </div>
-     
+
         <center>
                 <h2>Sound Information</h2>
                 <div id="length">Duration:</div>
@@ -38,68 +38,16 @@ if(!$connect){
                 <button id="restart">Restart</button>
                 <hr>
                 <h2>Playing Information</h2>
-                <div id="currentTime">0</div>               
+                <div id="currentTime">0</div>
                                                      </center>
-                
+
     <a class="log_out" href="table_settings/log_out.php">Wyloguj</a>
     <div class="random_button"><i class="icon-arrows-ccw"></i></div>
-                
+
     <div class="menu">
         <div class="menubutton"><i class="icon-cog-alt"></i></div>
-        <div class="menu-content"> 
+        <div class="menu-content">
             <div>
-                <h1>Operacje na słówkach</h1>
-                <?php include "name_table.php"; ?>
-                <br>
-                
-                <div><br><h2>DODAĆ</h2><a href="wyswietl_tablice.php">Tablice</a>
-                <br>
-                <input type="text" name="add-v1" placeholder="Angielskie" style="width: 150px">
-                <input type="text" name="add-v2" placeholder="Polskie" style="width: 150px">
-                <input type="text" name="add-v3" placeholder="Zdanie" style="width: 550px">
-                <button class="add">DODAJ</button>
-                </div>
-                 <div><br><h2>Zaktualizować</h2><br>
-                       ID=<input type="text"  name="delete-id"  name="update-id"  placeholder="ID:">
-                          <input type="text" name="update-v1"  placeholder="Angielskie:">
-                          <input type="text" name="update-v2"  placeholder="Polskie">
-                          <button class="update">Zaktualizować</button>
-                          <button class="delete">Usunąć</button><br>
-                    <div class="Button_on">Pokaż 
-                        <?php include "name_table.php" ?>
-                    </div>
-
-                    <div class="Button_off">Ukryj 
-                        <?php include "name_table.php" ?>
-                    </div>
-                  <div>
-                    <div class="pokaz">                  
-
-
-                        </div>
-                    </div>
-                </div><br>
-                 <div>
-                <h2>Pokazać</h2>
-               ID=<input type="text" name="select-id">
-                <button class="select">Pokaż</button>
-                </div>
-                <h2>Rezultat:</h2>
-                <div class="result">   
-                    
-            </div>
-            <div>
-                <h1>Dodawanie nowej tabeli</h1>
-                <form action="table_settings/add_db.php" method="post">
-                Nazwa nowej tabeli:<input type="text" name="databasename">
-                <input class="submit" type="submit" value="Wyślij">
-                </form>
-                </div><div>
-                 <h1>Usuwanie tabel</h1>
-                <form action="table_settings/delete_db.php" method="post">
-                  <?php include "name_table.php" ?>
-                    <input class="submit" type="submit" value="Wyślij">
-                    </form>
                     <a href="table_settings/log_out.php">WYLOGUJ</a>
             </div>
         </div>
@@ -113,20 +61,6 @@ if(!$connect){
 </script>
 
 <script>
-// ZWIJANIE I ROZWIJANIE //
-$(document).ready(function(){
-    //$('.Button_on').load("name_table.php");
-    $('.pokaz-tabele').on('click',function(){
-    var tabelka = $(this).val();
-    $('.pokaz').show().load("show_table.php?table="+tabelka);
-    });
-    $('.Button_off').click(function(){
-    $('.pokaz').hide();
-    });
-})
-
-
-// --------------------- //
 
     let array1=[]
     let array2=[]
@@ -162,7 +96,7 @@ $(document).ready(function(){
                 console.log('error');
             }
         })
-// Aktualizowanie //   
+// Aktualizowanie //
         $('.update').click(function() {
            let select_database = $("input[name=word_operation]:checked").val()
            let value1 = $("input[name=update-v1]").val()
@@ -180,7 +114,7 @@ $(document).ready(function(){
                 console.log('error')
             }
         })
-// Usuwanie //   
+// Usuwanie //
         $('.delete').click(function() {
            let select_database = $("input[name=word_operation]:checked").val()
            let id = $("input[name=delete-id]").val()
@@ -193,9 +127,9 @@ $(document).ready(function(){
             else{
                 console.log('error')
             }
-        })                 
-                    
-//Pokazywanie wybranego słowa//   
+        })
+
+//Pokazywanie wybranego słowa//
         $('.select').click(function() {
            let select_database = $("input[name=word_operation]:checked").val()
            let id = $("input[name=select-id]").val()
@@ -209,67 +143,67 @@ $(document).ready(function(){
                 console.log('error')
             }
         })
-     
+
     })
     let random_language= 0;
     let random_words= 0;
     let second_word = false;//sprawdza czy jest pokazane drugie słówko
     const panel = document.querySelector('.panel')
-    
-    const losuj =()=>{ 
+
+    const losuj =()=>{
     if(array1.length>0 && second_word == false){
         panel.classList.remove('active')
         random_language=Math.floor(Math.random()*2);
-        random_words = Math.floor(Math.random()*array1.length)       
-                       
+        random_words = Math.floor(Math.random()*array1.length)
+
                              let text = array1[random_words];
-                             
+
                              text = text.replace(/\s/g, "_");
                              text = text.replace("a_", "");
                              text = text.replace("an_", "");
                              text = text.replace("?", "");
                              text = text.replace("!", "");
                              console.log(text);
-                       
-                        if(typeof(audioElement) != "undefined" && audioElement !== null) { 
-                        
+
+                        if(typeof(audioElement) != "undefined" && audioElement !== null) {
+
                                 audioElement.pause();
-                        
+
                         } else {
-                        
-                                audioElement = document.createElement('audio'); 
-                        
+
+                                audioElement = document.createElement('audio');
+
                         }
-                        
+
                         // audioElement.currentTime = 0;
                         $ ('audio').attr('src', 'https://www.diki.pl//images-common/en/mp3/'+text+'.mp3');
                         audioElement.setAttribute('src', 'https://www.diki.pl//images-common/en/mp3/'+text+'.mp3');
-                        /*dodane oststnio */audioElement.play(); 
+                        /*dodane oststnio */audioElement.play();
                         audioElement.addEventListener('ended', function() {
                             this.play();
                         }, false);
-                        
+
                         audioElement.addEventListener("canplay",function(){
                             $("#length").text("Duration:" + audioElement.duration + " seconds");
                             $("#source").text("Source:" + audioElement.src);
                             $("#status").text("Status: Ready to play").css("color","green");
                         });
-                        
+
                         audioElement.addEventListener("timeupdate",function(){
                             $("#currentTime").text("Current second:" + audioElement.currentTime);
                         });
-                        
-                                              
+
+
                         $('#play').click(function(atrybute) {
-                            audioElement.play();                            
+                            audioElement.play();
                             $("#status").text("Status: Playing");
                         });
-                        
+
                         $('#pause').click(function(atrybute) {
                             audioElement.pause();
                             $("#status").text("Status: Paused");
                         });
-                        
+
                         $('#restart').click(function(atrybute) {
                             audioElement.currentTime = 0;
                         });
@@ -278,7 +212,7 @@ $(document).ready(function(){
         panel.innerHTML=`<span>${array1[random_words]}</span><span>${array2[random_words]}</span>`
         }
         else{
-        /*zamieniłem array*/panel.innerHTML=`<span>${array1[random_words]}</span><span>${array2[random_words]}</span>` 
+        /*zamieniłem array*/panel.innerHTML=`<span>${array1[random_words]}</span><span>${array2[random_words]}</span>`
         }
         second_word=!second_word
     }
@@ -288,14 +222,11 @@ $(document).ready(function(){
         }
     }
 //Po kliknięciu w klawiature albo przycisk losuje słówko
-    
+
 document.addEventListener('keydown',losuj)
 document.querySelector('.random_button').addEventListener('click',losuj)
 
 
-// odtwarzanie fonetycznej wymowy słów
-
-                  
 $(document).ready(function(){
   $('#przycisk').click(function(){
     window.document.location.href="fiszki.php";
@@ -309,19 +240,6 @@ $(document).ready(function(){
     return false;
   });
 });
-
-
-    
-//Wyświetlia tabelicę//
-/* $(document).ready(function() {
-        $('.button_on').click(function(){
-            let select_database = $("input[name=word_operation]:checked").val()
-            $('.button_on').load("show.table.php")
-            $('.pokaz').load('table_settings/load_table_fiszki.php',{
-                select_database:select_database
-            })
-        })
-*/
 
 </script>
 
