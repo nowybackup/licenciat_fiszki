@@ -34,6 +34,7 @@ echo '
             usun_zestaw();
             wyszukaj_zestaw();
             importuj_baze_danych();
+            echo "</br>";
             exportuj_baze_danych();
             wyloguj();
 echo '
@@ -150,7 +151,37 @@ case 'wyszukaj_zestaw':
        echo '</br><a href="tryb_wyboru.php">wróć</a>';
     }
 break;
-case 'importuj_beze_danych':
+case 'importuj_baze_danych':
+echo "import";
+  
+$nazwa_importowanej_tabeli = $_POST["nazwa_importowanej_tabeli"];
+
+   try
+    {
+            $utworz_miejsce_na_importowana_tabele = "CREATE TABLE $nazwa_importowanej_tabeli ( id INT NOT NULL AUTO_INCREMENT ,  v1 VARCHAR(70) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,  v2 VARCHAR(70) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,  weight INT NOT NULL ,  zdanie VARCHAR(90) CHARACTER SET utf8 COLLATE utf8_general_ci  , flaga INT NOT NULL , PRIMARY KEY  (id)) ENGINE = InnoDB";
+            $pdo ->query($utworz_miejsce_na_importowana_tabele) or die('Błąd zapytania CREATE TABLE');
+            $querty = "INSERT INTO info_table (name_table, flaga) VALUES ('$nazwa_importowanej_tabeli', '0')";
+            $pdo ->query($querty) or die('Błąd zapytania INSERT INTO');
+    }
+   catch(PDOException $e)
+    {
+        echo 'Połączenie nie mogło zostać utworzone: ' . $e->getMessage();
+    }
+
+
+$csvFile=$_FILES["file"]["tmp_name"];
+$handle = fopen($csvFile, "r");
+if ($handle) {
+  while (($line = fgetcsv($handle)) !== false) {  
+    try {
+      $stmt = $pdo->prepare("INSERT INTO $nazwa_importowanej_tabeli (v1, v2, weight, zdanie, flaga) VALUES ('$line[0]','$line[1]','$line[2]','$line[3]','$line[4]')");
+      $stmt->execute([$line[0], $line[1], $line[2], $line[3], $line[4]]);
+    } catch (Exception $ex) {
+      echo $ex->getmessage();
+    }
+  }
+  fclose($handle);
+} else { echo "ERROR OPENING $csvFile"; }
 
 break;
 default:                  
@@ -210,16 +241,17 @@ function importuj_baze_danych(){
                         <!-- File Button -->
                         <div style="float:left" class="form-group">
                             <label style="float:left" class="col-md-4 control-label" for="filebutton">Wybrany plik</label>
-                            <div class="col-md-4">
+                            <div class="col-md-4" ></br>
                                 <input type="file" name="file" required>
                             </div>
                         </div>
 						
                         <!-- Button -->
                         <div style="float:left" class="form-group">
-                            <label style="float:left" class="col-md-4 control-label" for="singlebutton">Importuj plik</label>
+                            <label style="float:left" class="col-md-4 control-label" for="singlebutton">Nazwa pliku</label>
                             <div class="col-md-4">
-                                <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Wyślij</button>
+                                <input type="text" name="nazwa_importowanej_tabeli"  style="width:120px;" required>
+                                <input type="submit" id="submit" name="Import" value="Wyślij " class="btn btn-primary button-loading" data-loading-text="Loading..."></input>
                             </div>
                         </div>
 						
@@ -228,10 +260,10 @@ function importuj_baze_danych(){
 }
 
 function exportuj_baze_danych(){
-      echo '<div class="import"><form class="form-horizontal" action="tryb_wyboru.php?zestaw=exportuj_baze_danych" method="post" name="upload_excel" enctype="multipart/form-data">
+      echo '<div class="import" ><form action="tryb_wyboru.php?zestaw=exportuj_baze_danych" method="post" name="upload_excel" enctype="multipart/form-data">
                   <fieldset>
                    <!-- Form Name -->
-                   <legend>Exportuj dane z pliku CSV </legend>
+                   <legend>Exportuj dane do pliku CSV </legend>
                   <div class="form-group">
                             <div class="col-md-4 col-md-offset-4">
                                 <input type="submit" name="Export" class="btn btn-success" value="export to excel"/>
