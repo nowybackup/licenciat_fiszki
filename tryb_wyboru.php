@@ -234,7 +234,12 @@ function importuj_baze_danych(){
 
           echo '</br><div class="import" ><form action="tryb_wyboru.php?zestaw=importuj_baze_danych" method="post" name="upload_excel" enctype="multipart/form-data">
                     <fieldset>
-
+       ----------------------------</br>
+       - v1 - v2 - zdanie - flaga -</br>
+       ----------------------------</br>
+       -    -    -        -       -</br>
+       -    -    -        -       -</br>
+       ----------------------------</br>
                         <!-- Form Name -->
                         <legend>Importuj dane z pliku CSV </legend>
 
